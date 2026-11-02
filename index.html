@@ -1,0 +1,1829 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SanginDisomVibe - Wanderlust, Cultural Beats & Native Crafts</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        vibe: {
+                            50: '#fff7ed',
+                            100: '#ffedd5',
+                            500: '#ea580c',
+                            600: '#c2410c',
+                            700: '#9a3412',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Font Awesome 6 Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <style>
+        /* Ambient Weather Particle Canvas */
+        .weather-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        /* Glassmorphism Classes */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+        }
+        .dark .glass-card {
+            background: rgba(15, 23, 42, 0.85);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        /* Official Sangin Disom Vibes Badge Hover & Polish */
+        .brand-logo-badge {
+            transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+            filter: drop-shadow(0 4px 10px rgba(234, 88, 12, 0.25));
+        }
+        .brand-logo-badge:hover {
+            transform: scale(1.05) rotate(-1deg);
+            filter: drop-shadow(0 8px 18px rgba(16, 185, 129, 0.35));
+        }
+
+        /* Dynamic Weather Mood Backgrounds */
+        .theme-sunny {
+            background: linear-gradient(135deg, #fef3c7 0%, #ffedd5 45%, #e0f2fe 100%);
+            color: #0f172a;
+        }
+        .theme-rainy {
+            background: linear-gradient(180deg, #090d16 0%, #111827 50%, #1f2937 100%);
+            color: #f9fafb;
+        }
+        .theme-foggy {
+            background: linear-gradient(135deg, #cbd5e1 0%, #e2e8f0 40%, #94a3b8 100%);
+            color: #1e293b;
+        }
+        .theme-night {
+            background: radial-gradient(circle at 50% 100%, #172554 0%, #030712 85%);
+            color: #f8fafc;
+        }
+
+        /* 16:9 Video Aspect Container */
+        .video-box {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+            border-radius: 1rem;
+        }
+        .video-box iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+
+        /* Smooth Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 7px;
+            height: 7px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(156, 163, 175, 0.5);
+            border-radius: 9999px;
+        }
+    </style>
+</head>
+<body class="theme-sunny min-h-screen transition-colors duration-700 flex flex-col font-sans select-none selection:bg-orange-500 selection:text-white" id="mainBody">
+
+    <!-- Atmospheric Weather Particle Layer -->
+    <canvas id="weatherCanvas" class="weather-canvas"></canvas>
+
+    <!-- Top Navigation Header -->
+    <header class="sticky top-0 z-40 glass-card shadow-sm border-b border-black/5 dark:border-white/10 transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16 sm:h-20">
+                
+                <!-- Logo & Brand Name with Official Sangin Disom Vibes Emblem -->
+                <a href="#heroSection" class="flex items-center gap-3 group">
+                    <div class="w-11 h-11 sm:w-12 sm:h-12 rounded-2xl p-0.5 brand-logo-badge bg-white shadow-md border border-black/10 dark:border-white/20 flex items-center justify-center overflow-hidden flex-shrink-0">
+                        <!-- SVG Recreation of Official Sangin Disom Vibes Badge -->
+                        <svg class="w-full h-full" viewBox="0 0 500 500" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <defs>
+                                <linearGradient id="bgGlow" x1="0" y1="0" x2="500" y2="500" gradientUnits="userSpaceOnUse">
+                                    <stop stop-color="#0284c7"/>
+                                    <stop offset="0.5" stop-color="#ffffff"/>
+                                    <stop offset="1" stop-color="#16a34a"/>
+                                </linearGradient>
+                                <linearGradient id="sunGrad" x1="250" y1="50" x2="250" y2="150" gradientUnits="userSpaceOnUse">
+                                    <stop stop-color="#ea580c"/>
+                                    <stop offset="0.7" stop-color="#f59e0b"/>
+                                    <stop offset="1" stop-color="#fde047"/>
+                                </linearGradient>
+                                <linearGradient id="sRibbonTop" x1="120" y1="120" x2="380" y2="250" gradientUnits="userSpaceOnUse">
+                                    <stop stop-color="#16a34a"/>
+                                    <stop offset="0.5" stop-color="#22c55e"/>
+                                    <stop offset="1" stop-color="#0284c7"/>
+                                </linearGradient>
+                                <linearGradient id="sRibbonBottom" x1="100" y1="220" x2="380" y2="300" gradientUnits="userSpaceOnUse">
+                                    <stop stop-color="#0f172a"/>
+                                    <stop offset="0.4" stop-color="#0369a1"/>
+                                    <stop offset="1" stop-color="#38bdf8"/>
+                                </linearGradient>
+                            </defs>
+                            <!-- Badge Rounded Border Frame -->
+                            <rect x="15" y="15" width="470" height="470" rx="95" fill="#f8fafc" stroke="url(#bgGlow)" stroke-width="12"/>
+                            
+                            <!-- Sun & Rays -->
+                            <circle cx="275" cy="115" r="68" fill="url(#sunGrad)"/>
+                            
+                            <!-- Mountains -->
+                            <polygon points="210,140 280,95 330,140" fill="#047857"/>
+                            <polygon points="280,95 330,140 260,140" fill="#10b981"/>
+                            <polygon points="295,140 350,110 395,140" fill="#059669"/>
+
+                            <!-- Airplane -->
+                            <path d="M335,80 L395,65 L405,68 L368,85 L395,85 L382,92 L350,88 Z" fill="#0f172a"/>
+                            <path d="M295,102 Q340,86 385,73" stroke="#e2e8f0" stroke-width="3" stroke-dasharray="4,4"/>
+
+                            <!-- Waterfall -->
+                            <path d="M250,140 Q255,170 270,185 Q285,195 295,200 L260,205 Q245,185 242,140 Z" fill="#38bdf8"/>
+                            <path d="M255,140 L260,195 M265,142 L275,198" stroke="#ffffff" stroke-width="2.5" opacity="0.8"/>
+
+                            <!-- S Shaped Landscape Ribbon -->
+                            <path d="M150,145 C115,160 110,215 220,230 C340,245 400,180 340,145 C295,120 180,130 150,145 Z" fill="url(#sRibbonTop)"/>
+                            <path d="M120,180 C110,230 190,260 260,260 C370,260 390,220 340,190 C250,185 150,170 120,180 Z" fill="url(#sRibbonBottom)"/>
+
+                            <!-- Mountaineer Silhouette -->
+                            <circle cx="185" cy="78" r="8" fill="#0f172a"/>
+                            <path d="M182,86 L192,86 L195,115 L190,130 L184,115 L180,105 Z" fill="#0f172a"/>
+                            <ellipse cx="174" cy="98" rx="8" ry="12" fill="#0f172a"/>
+
+                            <!-- High Speed Train -->
+                            <path d="M205,275 C240,262 315,225 365,215 C372,217 378,228 375,248 C370,268 350,278 335,278 C280,278 240,277 205,275 Z" fill="#ffffff" stroke="#0284c7" stroke-width="4"/>
+                            <path d="M325,230 Q348,226 360,236 Q345,248 322,246 Z" fill="#0f172a"/>
+                            <rect x="270" y="246" width="35" height="12" rx="3" fill="#0284c7"/>
+                            <rect x="228" y="253" width="30" height="11" rx="3" fill="#0284c7"/>
+
+                            <!-- "Sangin Disom" Typography -->
+                            <text x="250" y="345" font-family="'Inter', sans-serif" font-weight="900" font-size="52" fill="#091e36" text-anchor="middle" letter-spacing="-1">Sangin Disom</text>
+
+                            <!-- "Vibes" Brush Background & YouTube Icon -->
+                            <rect x="110" y="360" width="280" height="48" rx="24" fill="#16a34a"/>
+                            <text x="225" y="396" font-family="'Inter', sans-serif" font-style="italic" font-weight="800" font-size="34" fill="#ffffff" text-anchor="middle">Vibes</text>
+                            <!-- Mini YouTube Button -->
+                            <rect x="330" y="369" width="38" height="28" rx="8" fill="#ef4444"/>
+                            <polygon points="345,376 357,383 345,390" fill="#ffffff"/>
+
+                            <!-- Bottom Tagline -->
+                            <text x="250" y="440" font-family="'Inter', sans-serif" font-weight="800" font-size="16" fill="#1e293b" text-anchor="middle" letter-spacing="3.5">TRAVEL | VLOG | NATURE | WATERFALL</text>
+                        </svg>
+                    </div>
+                    <div>
+                        <span class="font-black text-xl tracking-tight flex items-center gap-1">
+                            SanginDisom<span class="text-orange-500">Vibes</span>
+                        </span>
+                        <p class="text-[10px] tracking-wider uppercase font-semibold opacity-60">TRAVEL • VLOG • NATURE • WATERFALL</p>
+                    </div>
+                </a>
+
+                <!-- Central Navigation Links -->
+                <nav class="hidden md:flex items-center gap-1 bg-black/5 dark:bg-white/5 p-1.5 rounded-2xl border border-black/5 dark:border-white/5">
+                    <a href="#exploreSection" class="px-3.5 py-1.5 rounded-xl text-xs font-semibold hover:text-orange-500 transition">
+                        <i class="fa-solid fa-compass mr-1 text-orange-500"></i> Travel Videos
+                    </a>
+                    <a href="#marketSection" class="px-3.5 py-1.5 rounded-xl text-xs font-semibold hover:text-orange-500 transition">
+                        <i class="fa-solid fa-store mr-1 text-emerald-500"></i> Marketplace
+                    </a>
+                    <a href="#musicSection" class="px-3.5 py-1.5 rounded-xl text-xs font-semibold hover:text-orange-500 transition">
+                        <i class="fa-solid fa-music mr-1 text-purple-500"></i> Melodies
+                    </a>
+                    <a href="#cultureSection" class="px-3.5 py-1.5 rounded-xl text-xs font-semibold hover:text-orange-500 transition">
+                        <i class="fa-solid fa-masks-theater mr-1 text-amber-500"></i> Heritage
+                    </a>
+                </nav>
+
+                <!-- Right Action Controls (Weather Trigger, Admin Button, Cart) -->
+                <div class="flex items-center gap-2.5">
+                    
+                    <!-- Weather Atmosphere Trigger (Opens Weather Control Modal) -->
+                    <button onclick="openWeatherModal()" class="px-3 py-2 rounded-xl bg-black/5 dark:bg-white/10 hover:bg-orange-500 hover:text-white text-xs font-bold transition flex items-center gap-2 border border-black/5 dark:border-white/10 shadow-sm" title="Change Weather Atmosphere">
+                        <i id="navWeatherIcon" class="fa-solid fa-sun text-amber-500"></i>
+                        <span id="navWeatherLabel" class="hidden sm:inline capitalize">Sunny Vibe</span>
+                    </button>
+
+                    <!-- Admin Portal Trigger (Opens Admin Login or Dashboard Modal) -->
+                    <button onclick="openAdminModal()" class="px-3 py-2 rounded-xl bg-black/5 dark:bg-white/10 hover:bg-slate-900 hover:text-white dark:hover:bg-slate-700 text-xs font-bold transition flex items-center gap-1.5 border border-black/5 dark:border-white/10" title="Admin Control Center">
+                        <i class="fa-solid fa-shield-halved text-orange-500"></i>
+                        <span class="hidden sm:inline">Admin</span>
+                    </button>
+
+                    <!-- Shopping Cart Button -->
+                    <button onclick="toggleCart(true)" class="relative p-2.5 rounded-xl bg-orange-500 hover:bg-orange-600 text-white shadow-lg shadow-orange-500/30 transition flex items-center justify-center">
+                        <i class="fa-solid fa-bag-shopping text-sm"></i>
+                        <span id="cartCountBadge" class="absolute -top-1.5 -right-1.5 bg-red-600 text-white font-black text-[10px] w-5 h-5 rounded-full flex items-center justify-center border-2 border-white dark:border-slate-900 shadow">0</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Clean Page Content -->
+    <main class="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8 space-y-16 relative z-10">
+
+        <!-- ================= HERO SECTION (Clean, Welcoming, Atmospheric) ================= -->
+        <section id="heroSection" class="glass-card rounded-3xl p-6 sm:p-12 lg:p-16 relative overflow-hidden shadow-xl border border-white/40">
+            <div class="max-w-3xl space-y-6 relative z-10">
+                <div class="inline-flex items-center gap-2.5 px-3 py-1.5 rounded-full text-xs font-bold bg-orange-500/15 text-orange-600 dark:text-orange-400">
+                    <span class="w-2 h-2 rounded-full bg-orange-500 animate-ping"></span>
+                    <span>Official Hub of Sangin Disom Vibes</span>
+                </div>
+                
+                <h1 class="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight leading-tight">
+                    Where Raw Nature Meets <span class="text-transparent bg-clip-text bg-gradient-to-r from-orange-500 to-amber-500">Timeless Culture</span>
+                </h1>
+
+                <p class="text-sm sm:text-base opacity-80 leading-relaxed max-w-2xl">
+                    Embark on visual journeys through misty hills, roaring cascades, and folk melodies. Support native artisans with authentic regional handicrafts, instruments, and handlooms delivered to your doorstep.
+                </p>
+
+                <!-- Action CTA -->
+                <div class="pt-2">
+                    <div class="flex flex-wrap items-center gap-3">
+                        <a href="#exploreSection" class="px-5 py-2.5 rounded-2xl bg-orange-500 hover:bg-orange-600 text-white font-bold text-xs sm:text-sm shadow-lg shadow-orange-500/30 transition flex items-center gap-2">
+                            <i class="fa-solid fa-compass"></i> Travel Videos
+                        </a>
+                        <a href="#marketSection" class="px-5 py-2.5 rounded-2xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs sm:text-sm shadow transition flex items-center gap-2">
+                            <i class="fa-solid fa-bag-shopping"></i> Marketplace
+                        </a>
+                        <a href="#musicSection" class="px-5 py-2.5 rounded-2xl bg-purple-600 hover:bg-purple-700 text-white font-bold text-xs sm:text-sm shadow transition flex items-center gap-2">
+                            <i class="fa-solid fa-music"></i> Melodies
+                        </a>
+                        <a href="#cultureSection" class="px-5 py-2.5 rounded-2xl bg-amber-600 hover:bg-amber-700 text-white font-bold text-xs sm:text-sm shadow transition flex items-center gap-2">
+                            <i class="fa-solid fa-masks-theater"></i> Culture
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Featured Brand Badge Graphic in Hero Corner -->
+            <div class="hidden lg:block absolute right-12 top-1/2 -translate-y-1/2 w-64 h-64 p-3 rounded-3xl bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl border border-white/50 dark:border-white/10 shadow-2xl brand-logo-badge">
+                <svg class="w-full h-full" viewBox="0 0 500 500" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <linearGradient id="heroBgGlow" x1="0" y1="0" x2="500" y2="500" gradientUnits="userSpaceOnUse">
+                            <stop stop-color="#0284c7"/>
+                            <stop offset="0.5" stop-color="#ffffff"/>
+                            <stop offset="1" stop-color="#16a34a"/>
+                        </linearGradient>
+                        <linearGradient id="heroSunGrad" x1="250" y1="50" x2="250" y2="150" gradientUnits="userSpaceOnUse">
+                            <stop stop-color="#ea580c"/>
+                            <stop offset="0.7" stop-color="#f59e0b"/>
+                            <stop offset="1" stop-color="#fde047"/>
+                        </linearGradient>
+                        <linearGradient id="heroSRibbonTop" x1="120" y1="120" x2="380" y2="250" gradientUnits="userSpaceOnUse">
+                            <stop stop-color="#16a34a"/>
+                            <stop offset="0.5" stop-color="#22c55e"/>
+                            <stop offset="1" stop-color="#0284c7"/>
+                        </linearGradient>
+                        <linearGradient id="heroSRibbonBottom" x1="100" y1="220" x2="380" y2="300" gradientUnits="userSpaceOnUse">
+                            <stop stop-color="#0f172a"/>
+                            <stop offset="0.4" stop-color="#0369a1"/>
+                            <stop offset="1" stop-color="#38bdf8"/>
+                        </linearGradient>
+                    </defs>
+                    <rect x="15" y="15" width="470" height="470" rx="95" fill="#f8fafc" stroke="url(#heroBgGlow)" stroke-width="12"/>
+                    <circle cx="275" cy="115" r="68" fill="url(#heroSunGrad)"/>
+                    <polygon points="210,140 280,95 330,140" fill="#047857"/>
+                    <polygon points="280,95 330,140 260,140" fill="#10b981"/>
+                    <polygon points="295,140 350,110 395,140" fill="#059669"/>
+                    <path d="M335,80 L395,65 L405,68 L368,85 L395,85 L382,92 L350,88 Z" fill="#0f172a"/>
+                    <path d="M295,102 Q340,86 385,73" stroke="#cbd5e1" stroke-width="3" stroke-dasharray="4,4"/>
+                    <path d="M250,140 Q255,170 270,185 Q285,195 295,200 L260,205 Q245,185 242,140 Z" fill="#38bdf8"/>
+                    <path d="M255,140 L260,195 M265,142 L275,198" stroke="#ffffff" stroke-width="2.5" opacity="0.8"/>
+                    <path d="M150,145 C115,160 110,215 220,230 C340,245 400,180 340,145 C295,120 180,130 150,145 Z" fill="url(#heroSRibbonTop)"/>
+                    <path d="M120,180 C110,230 190,260 260,260 C370,260 390,220 340,190 C250,185 150,170 120,180 Z" fill="url(#heroSRibbonBottom)"/>
+                    <circle cx="185" cy="78" r="8" fill="#0f172a"/>
+                    <path d="M182,86 L192,86 L195,115 L190,130 L184,115 L180,105 Z" fill="#0f172a"/>
+                    <ellipse cx="174" cy="98" rx="8" ry="12" fill="#0f172a"/>
+                    <path d="M205,275 C240,262 315,225 365,215 C372,217 378,228 375,248 C370,268 350,278 335,278 C280,278 240,277 205,275 Z" fill="#ffffff" stroke="#0284c7" stroke-width="4"/>
+                    <path d="M325,230 Q348,226 360,236 Q345,248 322,246 Z" fill="#0f172a"/>
+                    <rect x="270" y="246" width="35" height="12" rx="3" fill="#0284c7"/>
+                    <rect x="228" y="253" width="30" height="11" rx="3" fill="#0284c7"/>
+                    <text x="250" y="345" font-family="'Inter', sans-serif" font-weight="900" font-size="52" fill="#091e36" text-anchor="middle" letter-spacing="-1">Sangin Disom</text>
+                    <rect x="110" y="360" width="280" height="48" rx="24" fill="#16a34a"/>
+                    <text x="225" y="396" font-family="'Inter', sans-serif" font-style="italic" font-weight="800" font-size="34" fill="#ffffff" text-anchor="middle">Vibes</text>
+                    <rect x="330" y="369" width="38" height="28" rx="8" fill="#ef4444"/>
+                    <polygon points="345,376 357,383 345,390" fill="#ffffff"/>
+                    <text x="250" y="440" font-family="'Inter', sans-serif" font-weight="800" font-size="16" fill="#1e293b" text-anchor="middle" letter-spacing="3.5">TRAVEL | VLOG | NATURE | WATERFALL</text>
+                </svg>
+            </div>
+
+            <!-- Ambient Background Deco Elements -->
+            <div class="absolute -right-16 -bottom-16 w-80 h-80 rounded-full bg-gradient-to-tr from-amber-400/20 to-orange-500/20 blur-3xl pointer-events-none"></div>
+        </section>
+
+        <!-- ================= SECTION 1: DESTINATION & TRAVEL VIDEOS ================= -->
+        <section id="exploreSection" class="space-y-6">
+            <div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
+                <div>
+                    <span class="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full text-xs font-semibold bg-blue-500/10 text-blue-600 dark:text-blue-400">
+                        <i class="fa-solid fa-film"></i> Destination Streams
+                    </span>
+                    <h2 class="text-2xl sm:text-4xl font-extrabold tracking-tight mt-1">Travel & Exploration Videos</h2>
+                    <p class="text-xs sm:text-sm opacity-75">Curated travel journeys, waterfalls, and mountain plateaus.</p>
+                </div>
+
+                <!-- Video Search Input -->
+                <div class="relative w-full md:w-72">
+                    <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3 opacity-40 text-xs"></i>
+                    <input type="text" id="videoSearchInput" onkeyup="searchVideos()" placeholder="Search places, rivers, hills..." class="w-full pl-9 pr-3 py-2 text-xs rounded-xl border border-black/10 dark:border-white/10 bg-white/60 dark:bg-slate-800/60 focus:outline-none focus:ring-2 focus:ring-orange-500">
+                </div>
+            </div>
+
+            <!-- Category Pills Filter -->
+            <div class="flex items-center gap-2 overflow-x-auto pb-1" id="videoCategoryFilters">
+                <button onclick="filterVideos('all')" class="vid-cat-btn px-4 py-1.5 rounded-xl text-xs font-bold bg-orange-500 text-white shadow">All Destinations</button>
+                <button onclick="filterVideos('Mountains')" class="vid-cat-btn px-4 py-1.5 rounded-xl text-xs font-semibold bg-black/5 dark:bg-white/10 hover:bg-black/10">Mountains & Hills</button>
+                <button onclick="filterVideos('Waterfalls')" class="vid-cat-btn px-4 py-1.5 rounded-xl text-xs font-semibold bg-black/5 dark:bg-white/10 hover:bg-black/10">Waterfalls & Rivers</button>
+                <button onclick="filterVideos('Wildlife')" class="vid-cat-btn px-4 py-1.5 rounded-xl text-xs font-semibold bg-black/5 dark:bg-white/10 hover:bg-black/10">Forests & Wildlife</button>
+            </div>
+
+            <!-- Video Grid -->
+            <div id="videoGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Injected via JavaScript -->
+            </div>
+        </section>
+
+        <!-- ================= SECTION 2: MARKETING & STORE (SANGIN DISOM BAZAR) ================= -->
+        <section id="marketSection" class="space-y-6 pt-6 border-t border-black/10 dark:border-white/10">
+            <div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
+                <div>
+                    <span class="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full text-xs font-semibold bg-emerald-500/10 text-emerald-600 dark:text-emerald-400">
+                        <i class="fa-solid fa-leaf"></i> Authentic Native Marketplace
+                    </span>
+                    <h2 class="text-2xl sm:text-4xl font-extrabold tracking-tight mt-1">Sangin Disom Bazar</h2>
+                    <p class="text-xs sm:text-sm opacity-75">Handmade decor, traditional wraps, and organic forest produce with direct WhatsApp checkout.</p>
+                </div>
+
+                <!-- Product Sort & Filter Select -->
+                <div class="flex items-center gap-2">
+                    <select id="productSort" onchange="sortProducts()" class="text-xs px-3 py-2 rounded-xl border border-black/10 dark:border-white/10 bg-white/60 dark:bg-slate-800/60 focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                        <option value="featured">Featured Picks</option>
+                        <option value="low-to-high">Price: Low to High</option>
+                        <option value="high-to-low">Price: High to Low</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Store Category Pills -->
+            <div class="flex items-center gap-2 overflow-x-auto pb-1" id="productCategoryFilters">
+                <button onclick="filterProducts('all')" class="prod-cat-btn px-4 py-1.5 rounded-xl text-xs font-bold bg-emerald-600 text-white shadow">All Products</button>
+                <button onclick="filterProducts('Handicrafts')" class="prod-cat-btn px-4 py-1.5 rounded-xl text-xs font-semibold bg-black/5 dark:bg-white/10 hover:bg-black/10">Handicrafts</button>
+                <button onclick="filterProducts('Attire')" class="prod-cat-btn px-4 py-1.5 rounded-xl text-xs font-semibold bg-black/5 dark:bg-white/10 hover:bg-black/10">Weaves & Attire</button>
+                <button onclick="filterProducts('Souvenirs')" class="prod-cat-btn px-4 py-1.5 rounded-xl text-xs font-semibold bg-black/5 dark:bg-white/10 hover:bg-black/10">Forest Harvests</button>
+            </div>
+
+            <!-- Product Grid -->
+            <div id="productGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Injected via JavaScript -->
+            </div>
+        </section>
+
+        <!-- ================= SECTION 3: MUSIC & REGIONAL MELODIES ================= -->
+        <section id="musicSection" class="space-y-6 pt-6 border-t border-black/10 dark:border-white/10">
+            <div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
+                <div>
+                    <span class="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full text-xs font-semibold bg-purple-500/10 text-purple-600 dark:text-purple-400">
+                        <i class="fa-solid fa-guitar"></i> Folk & Modern Acoustic
+                    </span>
+                    <h2 class="text-2xl sm:text-4xl font-extrabold tracking-tight mt-1">Music & Melodies Hub</h2>
+                    <p class="text-xs sm:text-sm opacity-75">Soulful flutes, rhythmic folk percussion, and indigenous regional melodies.</p>
+                </div>
+                <div class="flex items-center gap-2 text-xs opacity-75">
+                    <i class="fa-solid fa-headphones text-purple-500 text-base"></i>
+                    <span>Stream Audio Previews & Traditional Tracks</span>
+                </div>
+            </div>
+
+            <!-- Music Player Container & Tracks Grid -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <!-- Featured Interactive Audio Deck -->
+                <div class="glass-card rounded-3xl p-6 flex flex-col justify-between shadow-lg border border-purple-500/20 relative overflow-hidden group">
+                    <div class="space-y-4">
+                        <div class="aspect-square rounded-2xl overflow-hidden relative shadow">
+                            <img id="playerCoverImg" src="https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&w=600&q=80" alt="Now Playing" class="w-full h-full object-cover">
+                            <div class="absolute inset-0 bg-black/40 flex items-center justify-center">
+                                <button onclick="toggleMusicPlay()" id="musicMainPlayBtn" class="w-16 h-16 rounded-full bg-purple-600 hover:bg-purple-700 text-white flex items-center justify-center shadow-2xl transition transform group-hover:scale-105">
+                                    <i id="musicPlayIcon" class="fa-solid fa-play text-xl ml-1"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div>
+                            <span class="text-[10px] uppercase font-bold text-purple-500 tracking-wider">Now Previewing</span>
+                            <h3 id="playerTrackTitle" class="font-extrabold text-base line-clamp-1 mt-0.5">Sohrai Rhythms & Bamboo Flute</h3>
+                            <p id="playerArtist" class="text-xs opacity-70">Santhal Traditional Ensemble</p>
+                        </div>
+
+                        <!-- Progress Bar Visualizer -->
+                        <div class="space-y-1">
+                            <div class="w-full bg-black/10 dark:bg-white/10 rounded-full h-2 overflow-hidden">
+                                <div id="musicProgressBar" class="bg-gradient-to-r from-purple-500 to-pink-500 h-full w-1/3 transition-all duration-300"></div>
+                            </div>
+                            <div class="flex justify-between text-[10px] opacity-60">
+                                <span id="playerCurrentTime">01:14</span>
+                                <span>03:45</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="pt-4 flex items-center justify-between border-t border-black/10 dark:border-white/10 text-xs mt-4">
+                        <span class="text-emerald-500 font-bold flex items-center gap-1.5"><i class="fa-solid fa-signal"></i> High Fidelity Audio</span>
+                        <button onclick="openTrackInYoutube()" class="text-xs font-semibold hover:text-purple-500 transition flex items-center gap-1">
+                            Full Track <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Playlist Track Cards -->
+                <div class="lg:col-span-2 space-y-3" id="musicTracksList">
+                    <!-- Injected dynamically via JS -->
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= SECTION 4: HERITAGE & CULTURE ================= -->
+        <section id="cultureSection" class="space-y-6 pt-6 border-t border-black/10 dark:border-white/10">
+            <div>
+                <span class="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full text-xs font-semibold bg-amber-500/10 text-amber-600 dark:text-amber-400">
+                    <i class="fa-solid fa-masks-theater"></i> Indigenous Roots
+                </span>
+                <h2 class="text-2xl sm:text-4xl font-extrabold tracking-tight mt-1">Culture, Heritage & Folklore</h2>
+                <p class="text-xs sm:text-sm opacity-75">Learn about ancient instruments, sacred seasonal festivals, and timeless tribal traditions.</p>
+            </div>
+
+            <!-- Heritage Cards Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Card 1: Traditional Instruments -->
+                <div class="glass-card rounded-3xl p-5 shadow hover:shadow-xl transition space-y-3 border border-amber-500/20">
+                    <div class="w-12 h-12 rounded-2xl bg-amber-500/15 text-amber-600 dark:text-amber-400 flex items-center justify-center text-xl">
+                        <i class="fa-solid fa-drum"></i>
+                    </div>
+                    <h3 class="font-bold text-base">Tumdah & Tamak</h3>
+                    <p class="text-xs opacity-75 leading-relaxed">
+                        The heartbeat of Santhal village celebrations. The <strong>Tumdah</strong> (earthen two-sided drum) and the iron <strong>Tamak</strong> form the rhythmic soul of community folk dances.
+                    </p>
+                    <span class="inline-block text-[11px] font-bold text-amber-600 dark:text-amber-400">Folk Percussion & Echo</span>
+                </div>
+
+                <!-- Card 2: Dhodro Banam -->
+                <div class="glass-card rounded-3xl p-5 shadow hover:shadow-xl transition space-y-3 border border-amber-500/20">
+                    <div class="w-12 h-12 rounded-2xl bg-orange-500/15 text-orange-600 dark:text-orange-400 flex items-center justify-center text-xl">
+                        <i class="fa-solid fa-guitar"></i>
+                    </div>
+                    <h3 class="font-bold text-base">Dhodro Banam</h3>
+                    <p class="text-xs opacity-75 leading-relaxed">
+                        A bowed wooden chordophone meticulously carved with human figures and floral motifs. Its haunting, warm tones accompany mythical narratives and ancient ballads.
+                    </p>
+                    <span class="inline-block text-[11px] font-bold text-orange-600 dark:text-orange-400">Stringed Heritage</span>
+                </div>
+
+                <!-- Card 3: Sohrai Harvest Festival -->
+                <div class="glass-card rounded-3xl p-5 shadow hover:shadow-xl transition space-y-3 border border-amber-500/20">
+                    <div class="w-12 h-12 rounded-2xl bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 flex items-center justify-center text-xl">
+                        <i class="fa-solid fa-wheat-awn"></i>
+                    </div>
+                    <h3 class="font-bold text-base">Sohrai Celebration</h3>
+                    <p class="text-xs opacity-75 leading-relaxed">
+                        Celebrated during winter harvest, houses are adorned with stunning mud mural art portraying cattle, birds, and forest trees in homage to ancestors and fertility.
+                    </p>
+                    <span class="inline-block text-[11px] font-bold text-emerald-600 dark:text-emerald-400">Harvest & Wall Murals</span>
+                </div>
+
+                <!-- Card 4: Baha Spring Festival -->
+                <div class="glass-card rounded-3xl p-5 shadow hover:shadow-xl transition space-y-3 border border-amber-500/20">
+                    <div class="w-12 h-12 rounded-2xl bg-rose-500/15 text-rose-600 dark:text-rose-400 flex items-center justify-center text-xl">
+                        <i class="fa-solid fa-seedling"></i>
+                    </div>
+                    <h3 class="font-bold text-base">Baha Parab (Spring)</h3>
+                    <p class="text-xs opacity-75 leading-relaxed">
+                        The festival of blooming Sal flowers and rejuvenation. Sal blossoms are distributed across the village, symbolizing harmony, renewal, and gratitude toward mother nature.
+                    </p>
+                    <span class="inline-block text-[11px] font-bold text-rose-600 dark:text-rose-400">Spring Blossom Rite</span>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="glass-card border-t border-black/10 dark:border-white/10 mt-16 py-8 relative z-10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
+            <div class="flex flex-col md:flex-row items-center justify-between gap-4 text-xs opacity-75">
+                <!-- Footer Brand with Logo -->
+                <div class="flex items-center gap-2.5 font-black text-sm">
+                    <div class="w-8 h-8 rounded-xl p-0.5 bg-white border border-black/10 shadow-sm flex items-center justify-center overflow-hidden flex-shrink-0">
+                        <svg class="w-full h-full" viewBox="0 0 500 500" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="15" y="15" width="470" height="470" rx="95" fill="#f8fafc" stroke="#16a34a" stroke-width="14"/>
+                            <circle cx="275" cy="115" r="68" fill="#f59e0b"/>
+                            <polygon points="210,140 280,95 330,140" fill="#047857"/>
+                            <polygon points="295,140 350,110 395,140" fill="#059669"/>
+                            <path d="M150,145 C115,160 110,215 220,230 C340,245 400,180 340,145 C295,120 180,130 150,145 Z" fill="#16a34a"/>
+                            <path d="M120,180 C110,230 190,260 260,260 C370,260 390,220 340,190 C250,185 150,170 120,180 Z" fill="#0284c7"/>
+                            <text x="250" y="345" font-family="sans-serif" font-weight="900" font-size="52" fill="#091e36" text-anchor="middle">Sangin Disom</text>
+                            <rect x="110" y="360" width="280" height="48" rx="24" fill="#16a34a"/>
+                            <text x="225" y="396" font-family="sans-serif" font-style="italic" font-weight="800" font-size="34" fill="#ffffff" text-anchor="middle">Vibes</text>
+                            <rect x="330" y="369" width="38" height="28" rx="8" fill="#ef4444"/>
+                            <polygon points="345,376 357,383 345,390" fill="#ffffff"/>
+                        </svg>
+                    </div>
+                    <span>SanginDisom<span class="text-orange-500">Vibes</span></span>
+                </div>
+                <div>
+                    &copy; <span id="currentYear"></span> SanginDisomVibes. Designed for travelers, listeners, and artisans.
+                </div>
+                <div class="flex items-center gap-4 flex-wrap justify-center">
+                    <a href="#exploreSection" class="hover:text-orange-500 transition">Videos</a>
+                    <a href="#marketSection" class="hover:text-orange-500 transition">Market</a>
+                    <a href="#musicSection" class="hover:text-orange-500 transition">Music</a>
+                    <a href="#cultureSection" class="hover:text-orange-500 transition">Culture</a>
+                    <button onclick="openWeatherModal()" class="hover:text-orange-500 transition">Atmosphere</button>
+                    <button onclick="openAdminModal()" class="hover:text-orange-500 transition">Admin Login</button>
+                </div>
+            </div>
+
+            <!-- Connect With Us: Instagram, Facebook & WhatsApp -->
+            <div class="pt-4 border-t border-black/5 dark:border-white/5 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs">
+                <span class="font-semibold text-neutral-600 dark:text-neutral-300 flex items-center gap-1.5">
+                    <i class="fa-solid fa-link text-orange-500"></i> Connect with SanginDisomVibe:
+                </span>
+                <div class="flex items-center gap-3">
+                    <!-- Instagram Link -->
+                    <a href="https://www.instagram.com/sangindisomvibe" target="_blank" rel="noopener noreferrer" 
+                       class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-pink-500/10 via-purple-500/10 to-orange-500/10 hover:from-pink-500 hover:via-purple-500 hover:to-orange-500 text-pink-600 dark:text-pink-400 hover:text-white transition-all duration-300 shadow-sm border border-pink-500/20 group font-medium"
+                       title="Follow on Instagram">
+                        <i class="fa-brands fa-instagram text-base group-hover:scale-110 transition-transform"></i>
+                        <span>Instagram</span>
+                    </a>
+
+                    <!-- Facebook Link -->
+                    <a href="https://www.facebook.com/share/19X7P3cwvL/" target="_blank" rel="noopener noreferrer" 
+                       class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-blue-600/10 hover:bg-blue-600 text-blue-600 dark:text-blue-400 hover:text-white transition-all duration-300 shadow-sm border border-blue-600/20 group font-medium"
+                       title="Join on Facebook">
+                        <i class="fa-brands fa-facebook text-base group-hover:scale-110 transition-transform"></i>
+                        <span>Facebook</span>
+                    </a>
+
+                    <!-- WhatsApp Link -->
+                    <a href="https://wa.me/918294126087" target="_blank" rel="noopener noreferrer" 
+                       class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-emerald-600/10 hover:bg-emerald-600 text-emerald-600 dark:text-emerald-400 hover:text-white transition-all duration-300 shadow-sm border border-emerald-600/20 group font-medium"
+                       title="Chat on WhatsApp">
+                        <i class="fa-brands fa-whatsapp text-base group-hover:scale-110 transition-transform"></i>
+                        <span>WhatsApp</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ================= MODALS & DRAWERS (OFF-HOME INTERFACES) ================= -->
+
+    <!-- 1. WEATHER CONTROL MODAL (Opened from Header / Footer) -->
+    <div id="weatherModal" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="glass-card max-w-md w-full rounded-3xl p-6 shadow-2xl border border-white/30 space-y-5 animate-fade-in">
+            <div class="flex items-center justify-between pb-3 border-b border-black/10 dark:border-white/10">
+                <div class="flex items-center gap-2">
+                    <div class="w-8 h-8 rounded-xl bg-orange-500/20 text-orange-600 dark:text-orange-400 flex items-center justify-center">
+                        <i class="fa-solid fa-cloud-sun text-sm"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-base">Atmosphere & Weather</h3>
+                        <p class="text-[11px] opacity-70">Customize the site ambience and canvas effects</p>
+                    </div>
+                </div>
+                <button onclick="closeWeatherModal()" class="p-1.5 rounded-xl hover:bg-black/10 dark:hover:bg-white/10 transition">
+                    <i class="fa-solid fa-xmark text-sm"></i>
+                </button>
+            </div>
+
+            <!-- Weather Selection Options -->
+            <div class="grid grid-cols-2 gap-3">
+                <button onclick="selectWeatherAndClose('sunny')" class="p-3.5 rounded-2xl bg-black/5 dark:bg-white/5 hover:bg-amber-500/15 border border-black/10 dark:border-white/10 text-left transition flex flex-col gap-1.5 group">
+                    <i class="fa-solid fa-sun text-xl text-amber-500 group-hover:scale-110 transition-transform"></i>
+                    <span class="text-xs font-bold">Sunny Golden</span>
+                    <span class="text-[10px] opacity-60">Warm light & daylight vibe</span>
+                </button>
+
+                <button onclick="selectWeatherAndClose('rainy')" class="p-3.5 rounded-2xl bg-black/5 dark:bg-white/5 hover:bg-blue-500/15 border border-black/10 dark:border-white/10 text-left transition flex flex-col gap-1.5 group">
+                    <i class="fa-solid fa-cloud-showers-heavy text-xl text-blue-400 group-hover:scale-110 transition-transform"></i>
+                    <span class="text-xs font-bold">Rainy Monsoon</span>
+                    <span class="text-[10px] opacity-60">Animated falling raindrops</span>
+                </button>
+
+                <button onclick="selectWeatherAndClose('foggy')" class="p-3.5 rounded-2xl bg-black/5 dark:bg-white/5 hover:bg-slate-500/15 border border-black/10 dark:border-white/10 text-left transition flex flex-col gap-1.5 group">
+                    <i class="fa-solid fa-smog text-xl text-slate-400 group-hover:scale-110 transition-transform"></i>
+                    <span class="text-xs font-bold">Misty Fog</span>
+                    <span class="text-[10px] opacity-60">Floating mountain mist</span>
+                </button>
+
+                <button onclick="selectWeatherAndClose('night')" class="p-3.5 rounded-2xl bg-black/5 dark:bg-white/5 hover:bg-indigo-500/15 border border-black/10 dark:border-white/10 text-left transition flex flex-col gap-1.5 group">
+                    <i class="fa-solid fa-moon text-xl text-indigo-400 group-hover:scale-110 transition-transform"></i>
+                    <span class="text-xs font-bold">Starry Night</span>
+                    <span class="text-[10px] opacity-60">Twinkling stars & dark theme</span>
+                </button>
+            </div>
+
+            <div class="text-[11px] text-center opacity-60">
+                Weather choice is automatically remembered on this browser.
+            </div>
+        </div>
+    </div>
+
+    <!-- 2. ADMIN MODAL (Secured, Off-Home Interface) -->
+    <div id="adminModal" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 hidden flex items-center justify-center p-3 sm:p-6">
+        <div class="glass-card max-w-2xl w-full rounded-3xl p-6 sm:p-8 shadow-2xl border border-white/30 space-y-6 max-h-[90vh] overflow-y-auto">
+            
+            <!-- Modal Header -->
+            <div class="flex items-center justify-between pb-3 border-b border-black/10 dark:border-white/10">
+                <div class="flex items-center gap-2.5">
+                    <div class="w-9 h-9 rounded-2xl bg-orange-500 text-white flex items-center justify-center shadow">
+                        <i class="fa-solid fa-shield-halved text-base"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-extrabold text-lg">SanginDisom Admin Hub</h3>
+                        <p class="text-xs opacity-70">Manage travel streams and store catalog</p>
+                    </div>
+                </div>
+                <button onclick="closeAdminModal()" class="p-2 rounded-xl hover:bg-black/10 dark:hover:bg-white/10 transition">
+                    <i class="fa-solid fa-xmark text-base"></i>
+                </button>
+            </div>
+
+            <!-- State A: Login View (Secure form without displayed credentials) -->
+            <div id="adminLoginSection" class="space-y-4 max-w-sm mx-auto py-4">
+                <div class="text-center space-y-1 mb-2">
+                    <div class="w-12 h-12 mx-auto rounded-full bg-orange-500/10 text-orange-600 dark:text-orange-400 flex items-center justify-center text-xl mb-2">
+                        <i class="fa-solid fa-lock"></i>
+                    </div>
+                    <h4 class="font-bold text-sm">Authorized Personnel Only</h4>
+                    <p class="text-xs opacity-70">Please authenticate with your private administrator credentials.</p>
+                </div>
+
+                <form onsubmit="handleAdminLogin(event)" class="space-y-3">
+                    <div>
+                        <label class="block text-xs font-semibold mb-1 opacity-80">Admin ID</label>
+                        <input type="text" id="adminInputId" required autocomplete="username" placeholder="Enter Admin ID" class="w-full px-3 py-2 text-xs rounded-xl border border-black/10 dark:border-white/10 bg-white/70 dark:bg-slate-800/70 focus:outline-none focus:ring-2 focus:ring-orange-500">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold mb-1 opacity-80">Password</label>
+                        <div class="relative">
+                            <input type="password" id="adminInputPass" required autocomplete="current-password" placeholder="Enter Password" class="w-full pl-3 pr-10 py-2 text-xs rounded-xl border border-black/10 dark:border-white/10 bg-white/70 dark:bg-slate-800/70 focus:outline-none focus:ring-2 focus:ring-orange-500">
+                            <button type="button" onclick="togglePasswordVisibility()" class="absolute right-3 top-2.5 text-xs opacity-50 hover:opacity-100 transition" title="Toggle password visibility">
+                                <i id="togglePassIcon" class="fa-regular fa-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div id="adminAuthError" class="hidden text-xs text-red-500 font-bold">
+                        <i class="fa-solid fa-circle-exclamation mr-1"></i> Access denied: Invalid credentials!
+                    </div>
+                    <button type="submit" class="w-full py-2.5 bg-orange-500 hover:bg-orange-600 text-white font-bold text-xs rounded-xl shadow-md transition">
+                        Unlock Admin Dashboard
+                    </button>
+                </form>
+            </div>
+
+            <!-- State B: Operational Dashboard View (If authenticated) -->
+            <div id="adminDashboardSection" class="hidden space-y-6">
+                <!-- Navigation Tabs inside Admin -->
+                <div class="flex items-center justify-between border-b border-black/10 dark:border-white/10 pb-3">
+                    <div class="flex items-center gap-1.5 flex-wrap">
+                        <button onclick="switchAdminTab('videoTab')" id="btnTabVideo" class="px-3 py-1.5 rounded-xl text-xs font-bold bg-orange-500 text-white shadow">
+                            <i class="fa-brands fa-youtube mr-1"></i> Add Video
+                        </button>
+                        <button onclick="switchAdminTab('productTab')" id="btnTabProduct" class="px-3 py-1.5 rounded-xl text-xs font-bold bg-black/5 dark:bg-white/10 hover:bg-black/10 transition">
+                            <i class="fa-solid fa-cart-plus mr-1"></i> Add Product
+                        </button>
+                        <button onclick="switchAdminTab('musicTab')" id="btnTabMusic" class="px-3 py-1.5 rounded-xl text-xs font-bold bg-black/5 dark:bg-white/10 hover:bg-black/10 transition">
+                            <i class="fa-solid fa-music mr-1"></i> Add Music
+                        </button>
+                        <button onclick="switchAdminTab('manageTab')" id="btnTabManage" class="px-3 py-1.5 rounded-xl text-xs font-bold bg-black/5 dark:bg-white/10 hover:bg-black/10 transition">
+                            <i class="fa-solid fa-list-check mr-1"></i> Manage All
+                        </button>
+                    </div>
+                    <button onclick="handleAdminLogout()" class="text-xs px-3 py-1 rounded-xl bg-red-500/10 hover:bg-red-500 hover:text-white text-red-500 transition font-bold">
+                        Logout
+                    </button>
+                </div>
+
+                <!-- Sub-Panel 1: Add Video -->
+                <div id="adminPanel-video" class="space-y-3">
+                    <h4 class="text-xs font-bold uppercase tracking-wider text-orange-500">Publish YouTube Destination Stream</h4>
+                    <form onsubmit="handleAdminAddVideo(event)" class="space-y-3">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            <div>
+                                <label class="block text-[11px] font-semibold mb-1 opacity-80">Destination Name</label>
+                                <input type="text" id="admVideoLoc" required placeholder="e.g. Parasnath Hill, Jharkhand" class="w-full px-3 py-2 text-xs rounded-xl border border-black/10 dark:border-white/10 bg-white/70 dark:bg-slate-800/70 focus:outline-none">
+                            </div>
+                            <div>
+                                <label class="block text-[11px] font-semibold mb-1 opacity-80">Category</label>
+                                <select id="admVideoCat" class="w-full px-3 py-2 text-xs rounded-xl border border-black/10 dark:border-white/10 bg-white/70 dark:bg-slate-800/70 focus:outline-none">
+                                    <option value="Mountains">Mountains & Hills</option>
+                                    <option value="Waterfalls">Waterfalls & Rivers</option>
+                                    <option value="Culture">Tribal Culture & Folk</option>
+                                    <option value="Wildlife">Forests & Wildlife</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-[11px] font-semibold mb-1 opacity-80">Video Title</label>
+                            <input type="text" id="admVideoTitle" required placeholder="Scenic Sunset at Netarhat Plateau" class="w-full px-3 py-2 text-xs rounded-xl border border-black/10 dark:border-white/10 bg-white/70 dark:bg-slate-800/70 focus:outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-[11px] font-semibold mb-1 opacity-80">YouTube Video URL</label>
+                            <input type="url" id="admVideoUrl" required placeholder="https://www.youtube.com/watch?v=... or https://youtu.be/..." class="w-full px-3 py-2 text-xs rounded-xl border border-black/10 dark:border-white/10 bg-white/70 dark:bg-slate-800/70 focus:outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-[11px] font-semibold mb-1 opacity-80">Brief Description</label>
+                            <textarea id="admVideoDesc" rows="2" placeholder="Experience the breathtaking wilderness and cultural vibe..." class="w-full px-3 py-2 text-xs rounded-xl border border-black/10 dark:border-white/10 bg-white/70 dark:bg-slate-800/70 focus:outline-none"></textarea>
+                        </div>
+                        <button type="submit" class="w-full py-2.5 bg-orange-500 hover:bg-orange-600 text-white font-bold text-xs rounded-xl shadow transition">
+                            Publish Video to Explorer
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Sub-Panel 2: Add Product -->
+                <div id="adminPanel-product" class="hidden space-y-3">
+                    <h4 class="text-xs font-bold uppercase tracking-wider text-emerald-500">Publish Marketplace Merchandise</h4>
+                    <form onsubmit="handleAdminAddProduct(event)" class="space-y-3">
+                        <div>
+                            <label class="block text-[11px] font-semibold mb-1 opacity-80">Product Title</label>
+                            <input type="text" id="admProdName" required placeholder="Handmade Mandar Clay Percussion Drum" class="w-full px-3 py-2 text-xs rounded-xl border border-black/10 dark:border-white/10 bg-white/70 dark:bg-slate-800/70 focus:outline-none">
+                        </div>
+                        <div class="grid grid-cols-2 gap-3">
+                            <div>
+                                <label class="block text-[11px] font-semibold mb-1 opacity-80">Selling Price (₹)</label>
+                                <input type="number" id="admProdPrice" required placeholder="999" class="w-full px-3 py-2 text-xs rounded-xl border border-black/10 dark:border-white/10 bg-white/70 dark:bg-slate-800/70 focus:outline-none">
+                            </div>
+                            <div>
+                                <label class="block text-[11px] font-semibold mb-1 opacity-80">Original Price (₹)</label>
+                                <input type="number" id="admProdOrigPrice" placeholder="1499" class="w-full px-3 py-2 text-xs rounded-xl border border-black/10 dark:border-white/10 bg-white/70 dark:bg-slate-800/70 focus:outline-none">
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-2 gap-3">
+                            <div>
+                                <label class="block text-[11px] font-semibold mb-1 opacity-80">Category</label>
+                                <select id="admProdCat" class="w-full px-3 py-2 text-xs rounded-xl border border-black/10 dark:border-white/10 bg-white/70 dark:bg-slate-800/70 focus:outline-none">
+                                    <option value="Handicrafts">Handicrafts</option>
+                                    <option value="Attire">Weaves & Attire</option>
+                                    <option value="Musical">Folk Musical Gear</option>
+                                    <option value="Souvenirs">Souvenirs</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-[11px] font-semibold mb-1 opacity-80">Badge (Optional)</label>
+                                <input type="text" id="admProdBadge" placeholder="Bestseller / Handcrafted" class="w-full px-3 py-2 text-xs rounded-xl border border-black/10 dark:border-white/10 bg-white/70 dark:bg-slate-800/70 focus:outline-none">
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-[11px] font-semibold mb-1 opacity-80">Product Image URL</label>
+                            <input type="url" id="admProdImg" required placeholder="https://images.unsplash.com/..." class="w-full px-3 py-2 text-xs rounded-xl border border-black/10 dark:border-white/10 bg-white/70 dark:bg-slate-800/70 focus:outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-[11px] font-semibold mb-1 opacity-80">Product Description</label>
+                            <textarea id="admProdDesc" rows="2" placeholder="Details about raw material, artisans, and sizing..." class="w-full px-3 py-2 text-xs rounded-xl border border-black/10 dark:border-white/10 bg-white/70 dark:bg-slate-800/70 focus:outline-none"></textarea>
+                        </div>
+                        <button type="submit" class="w-full py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs rounded-xl shadow transition">
+                            Publish to Marketplace
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Sub-Panel 3: Add Music Track -->
+                <div id="adminPanel-music" class="hidden space-y-3">
+                    <h4 class="text-xs font-bold uppercase tracking-wider text-purple-600 dark:text-purple-400">Publish Music Track / Folk Song</h4>
+                    <form onsubmit="handleAdminAddMusic(event)" class="space-y-3">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            <div>
+                                <label class="block text-[11px] font-semibold mb-1 opacity-80">Track Title</label>
+                                <input type="text" id="admMusicTitle" required placeholder="e.g. Whispering Sal Leaves" class="w-full px-3 py-2 text-xs rounded-xl border border-black/10 dark:border-white/10 bg-white/70 dark:bg-slate-800/70 focus:outline-none">
+                            </div>
+                            <div>
+                                <label class="block text-[11px] font-semibold mb-1 opacity-80">Artist / Ensemble</label>
+                                <input type="text" id="admMusicArtist" required placeholder="e.g. Tribal Acoustic Ensemble" class="w-full px-3 py-2 text-xs rounded-xl border border-black/10 dark:border-white/10 bg-white/70 dark:bg-slate-800/70 focus:outline-none">
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            <div>
+                                <label class="block text-[11px] font-semibold mb-1 opacity-80">Genre / Rhythm Style</label>
+                                <input type="text" id="admMusicGenre" required placeholder="e.g. Bamboo Flute & Drum / Folk Lore" class="w-full px-3 py-2 text-xs rounded-xl border border-black/10 dark:border-white/10 bg-white/70 dark:bg-slate-800/70 focus:outline-none">
+                            </div>
+                            <div>
+                                <label class="block text-[11px] font-semibold mb-1 opacity-80">Duration (e.g. 03:45)</label>
+                                <input type="text" id="admMusicDuration" placeholder="03:30" class="w-full px-3 py-2 text-xs rounded-xl border border-black/10 dark:border-white/10 bg-white/70 dark:bg-slate-800/70 focus:outline-none">
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-[11px] font-semibold mb-1 opacity-80">Music Link (YouTube URL or Direct Audio URL)</label>
+                            <input type="url" id="admMusicUrl" required placeholder="https://www.youtube.com/watch?v=... or https://..." class="w-full px-3 py-2 text-xs rounded-xl border border-black/10 dark:border-white/10 bg-white/70 dark:bg-slate-800/70 focus:outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-[11px] font-semibold mb-1 opacity-80">Album Cover / Artwork URL</label>
+                            <input type="url" id="admMusicCover" placeholder="https://images.unsplash.com/photo-..." class="w-full px-3 py-2 text-xs rounded-xl border border-black/10 dark:border-white/10 bg-white/70 dark:bg-slate-800/70 focus:outline-none">
+                        </div>
+                        <button type="submit" class="w-full py-2.5 bg-purple-600 hover:bg-purple-700 text-white font-bold text-xs rounded-xl shadow transition">
+                            Publish Song to Melodies Hub
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Sub-Panel 4: Manage Catalog -->
+                <div id="adminPanel-manage" class="hidden grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div class="space-y-2">
+                        <h4 class="text-xs font-bold text-orange-500">Live Videos (<span id="admVideoCount">0</span>)</h4>
+                        <div id="admVideoList" class="space-y-2 max-h-60 overflow-y-auto pr-1 text-xs"></div>
+                    </div>
+                    <div class="space-y-2">
+                        <h4 class="text-xs font-bold text-emerald-500">Live Products (<span id="admProductCount">0</span>)</h4>
+                        <div id="admProductList" class="space-y-2 max-h-60 overflow-y-auto pr-1 text-xs"></div>
+                    </div>
+                    <div class="space-y-2">
+                        <h4 class="text-xs font-bold text-purple-500">Live Tracks (<span id="admMusicCount">0</span>)</h4>
+                        <div id="admMusicList" class="space-y-2 max-h-60 overflow-y-auto pr-1 text-xs"></div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+    <!-- 3. YOUTUBE VIDEO THEATER MODAL -->
+    <div id="videoModal" class="fixed inset-0 bg-black/85 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
+        <div class="glass-card bg-slate-950 border-white/20 text-white max-w-4xl w-full rounded-3xl overflow-hidden shadow-2xl relative">
+            <div class="p-4 flex items-center justify-between border-b border-white/10">
+                <h4 id="modalVideoTitle" class="font-bold text-sm sm:text-base line-clamp-1">Destination Stream</h4>
+                <button onclick="closeVideoModal()" class="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <div class="p-4 sm:p-6 space-y-3">
+                <div class="video-box bg-black shadow-inner">
+                    <iframe id="modalVideoIframe" src="" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                </div>
+                <div class="flex items-center justify-between text-xs text-slate-300 pt-2">
+                    <span id="modalVideoLocation"><i class="fa-solid fa-location-dot text-orange-400 mr-1"></i> Destination</span>
+                    <button onclick="copyCurrentVideoLink()" class="px-3 py-1.5 rounded-xl bg-white/10 hover:bg-white/20 transition flex items-center gap-1.5">
+                        <i class="fa-regular fa-copy"></i> Copy Link
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 4. SHOPPING CART DRAWER -->
+    <div id="cartBackdrop" onclick="toggleCart(false)" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden transition-opacity"></div>
+    <div id="cartDrawer" class="fixed top-0 right-0 h-full w-full max-w-md glass-card z-50 shadow-2xl transform translate-x-full transition-transform duration-300 flex flex-col">
+        <div class="p-4 border-b border-black/10 dark:border-white/10 flex items-center justify-between">
+            <div class="flex items-center gap-2">
+                <i class="fa-solid fa-bag-shopping text-orange-500 text-lg"></i>
+                <h3 class="font-bold text-base">Your Cart</h3>
+            </div>
+            <button onclick="toggleCart(false)" class="p-2 rounded-xl hover:bg-black/10 dark:hover:bg-white/10 transition">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+
+        <div id="cartItemsList" class="flex-1 p-4 overflow-y-auto space-y-3"></div>
+
+        <div class="p-4 border-t border-black/10 dark:border-white/10 space-y-3 bg-black/5 dark:bg-white/5">
+            <div class="flex items-center justify-between font-bold text-base">
+                <span>Subtotal:</span>
+                <span class="text-orange-600 dark:text-orange-400 font-extrabold text-lg" id="cartTotalPrice">₹0</span>
+            </div>
+            <p class="text-[11px] opacity-70">
+                <i class="fa-solid fa-truck-fast mr-1 text-emerald-500"></i> Artisanal direct packaging with WhatsApp order confirmation.
+            </p>
+            <div class="flex flex-col gap-2">
+                <button onclick="checkoutOnWhatsApp()" class="w-full py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm rounded-xl transition shadow flex items-center justify-center gap-2">
+                    <i class="fa-brands fa-whatsapp text-lg"></i> Order via WhatsApp
+                </button>
+                <button onclick="clearEntireCart()" class="w-full py-2 bg-transparent hover:bg-black/5 dark:hover:bg-white/5 text-xs opacity-70 rounded-xl transition">
+                    Empty Cart
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification Toast -->
+    <div id="appToast" class="fixed bottom-6 right-6 z-50 transform translate-y-20 opacity-0 transition-all duration-300 pointer-events-none bg-slate-900 text-white px-4 py-3 rounded-2xl shadow-2xl flex items-center gap-3 text-xs sm:text-sm border border-white/10">
+        <span id="toastIcon" class="text-emerald-400 text-base"><i class="fa-solid fa-check-circle"></i></span>
+        <span id="toastMessage">Success</span>
+    </div>
+
+    <!-- ================= JAVASCRIPT LOGIC ================= -->
+    <script>
+        // Initial Dataset
+        const DEFAULT_VIDEOS = [
+            {
+                id: 'vid-1',
+                title: 'High Altitude Himalayan Passes & Sacred Pine Forest Trails',
+                location: 'Himachal & Spiti',
+                url: 'https://www.youtube.com/watch?v=ScMzIvxBSi4',
+                category: 'Mountains',
+                desc: 'Crisp mountain breezes, secluded high-altitude trails, and towering Himalayan pine forests.'
+            },
+            {
+                id: 'vid-2',
+                title: 'Misty Meghalaya Waterfalls & Living Root Bridges',
+                location: 'Cherrapunji & Nongriat',
+                url: 'https://www.youtube.com/watch?v=9No-FiEInLA',
+                category: 'Waterfalls',
+                desc: 'Witness cascading jungle streams veiled in perpetual mountain clouds and crystal natural pools.'
+            },
+            {
+                id: 'vid-3',
+                title: 'Deep Sal Forest Trails & Tribal Wilderness Camp',
+                location: 'Netarhat Woods',
+                url: 'https://www.youtube.com/watch?v=ysz5S6PUM-U',
+                category: 'Wildlife',
+                desc: 'Explore untamed green flora, rustling forest canopies, and peaceful wilderness camping.'
+            }
+        ];
+
+        const DEFAULT_PRODUCTS = [
+            {
+                id: 'prod-1',
+                name: 'Handcrafted Wooden Carved Wildlife Figurine',
+                price: 899,
+                origPrice: 1399,
+                badge: 'Artisan Crafted',
+                category: 'Handicrafts',
+                image: 'https://images.unsplash.com/photo-1578328819058-b69f3a3b0f6b?auto=format&fit=crop&w=600&q=80',
+                desc: 'Hand-sculpted by native artisans using seasoned sustainable timber with tribal accents.'
+            },
+            {
+                id: 'prod-2',
+                name: 'Ethnic Pure Wool Patterned Winter Wrap',
+                price: 1599,
+                origPrice: 2499,
+                badge: '40% Off',
+                category: 'Attire',
+                image: 'https://images.unsplash.com/photo-1607344645866-009c320c5ab8?auto=format&fit=crop&w=600&q=80',
+                desc: 'Ultra-warm, soft-textured winter stole featuring authentic indigenous woven borders.'
+            },
+            {
+                id: 'prod-3',
+                name: 'Organic Wild Forest Raw Flora Honey',
+                price: 499,
+                origPrice: 750,
+                badge: 'Pure Forest',
+                category: 'Souvenirs',
+                image: 'https://images.unsplash.com/photo-1587049352846-4a222e784d38?auto=format&fit=crop&w=600&q=80',
+                desc: '100% pure, unfiltered wild forest honey collected traditionally by forest tribes.'
+            }
+        ];
+
+        const DEFAULT_MUSIC = [
+            {
+                id: 'mus-1',
+                title: 'Sohrai Rhythms & Bamboo Flute',
+                artist: 'Santhal Folk Collective',
+                duration: '03:45',
+                url: 'https://www.youtube.com/watch?v=ScMzIvxBSi4',
+                genre: 'Folk Flute & Drums',
+                cover: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&w=600&q=80'
+            },
+            {
+                id: 'mus-2',
+                title: 'Dhodro Banam Mystic Solitude',
+                artist: 'Eastern Forest Strings',
+                duration: '04:12',
+                url: 'https://www.youtube.com/watch?v=9No-FiEInLA',
+                genre: 'Acoustic String Ballad',
+                cover: 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=600&q=80'
+            },
+            {
+                id: 'mus-3',
+                title: 'Spring Blossom (Baha Chorus)',
+                artist: 'Village Elders & Choral Ensemble',
+                duration: '02:58',
+                url: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+                genre: 'Celebration Chants',
+                cover: 'https://images.unsplash.com/photo-1465847899084-d164df4dedc6?auto=format&fit=crop&w=600&q=80'
+            }
+        ];
+
+        // Global State
+        let state = {
+            videos: [],
+            products: [],
+            music: [],
+            activeTrack: null,
+            isPlayingMusic: false,
+            cart: [],
+            weather: 'sunny',
+            isAdmin: false,
+            currentVideoLink: ''
+        };
+
+        // Weather Ambience Canvas System
+        let canvas, ctx;
+        let particles = [];
+
+        function initWeatherParticles() {
+            canvas = document.getElementById('weatherCanvas');
+            if (!canvas) return;
+            ctx = canvas.getContext('2d');
+            resizeWeatherCanvas();
+            window.addEventListener('resize', resizeWeatherCanvas);
+            spawnWeatherParticles();
+            runParticleLoop();
+        }
+
+        function resizeWeatherCanvas() {
+            if (!canvas) return;
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            spawnWeatherParticles();
+        }
+
+        function spawnWeatherParticles() {
+            particles = [];
+            const count = state.weather === 'rainy' ? 120 : (state.weather === 'night' ? 90 : 35);
+            for (let i = 0; i < count; i++) {
+                particles.push({
+                    x: Math.random() * (canvas ? canvas.width : window.innerWidth),
+                    y: Math.random() * (canvas ? canvas.height : window.innerHeight),
+                    speed: state.weather === 'rainy' ? 7 + Math.random() * 8 : 0.2 + Math.random() * 0.6,
+                    length: 12 + Math.random() * 15,
+                    radius: Math.random() * 2 + 1,
+                    alpha: Math.random(),
+                    dx: (Math.random() - 0.5) * 0.6,
+                    dy: (Math.random() - 0.5) * 0.4
+                });
+            }
+        }
+
+        function openWeatherModal() {
+            document.getElementById('weatherModal').classList.remove('hidden');
+        }
+
+        function closeWeatherModal() {
+            document.getElementById('weatherModal').classList.add('hidden');
+        }
+
+        function selectWeatherAndClose(theme) {
+            setWeatherMood(theme, true);
+            closeWeatherModal();
+        }
+
+        function setWeatherMood(theme, notify = true) {
+            state.weather = theme;
+            localStorage.setItem('sangin_weather', theme);
+            const body = document.getElementById('mainBody');
+            body.className = `theme-${theme} min-h-screen transition-colors duration-700 flex flex-col font-sans select-none selection:bg-orange-500 selection:text-white`;
+
+            const iconMap = {
+                sunny: 'fa-sun text-amber-500',
+                rainy: 'fa-cloud-showers-heavy text-blue-400',
+                foggy: 'fa-smog text-slate-400',
+                night: 'fa-moon text-indigo-400'
+            };
+
+            const labelMap = {
+                sunny: 'Sunny Vibe',
+                rainy: 'Monsoon Vibe',
+                foggy: 'Misty Vibe',
+                night: 'Starry Vibe'
+            };
+
+            const iconEl = document.getElementById('navWeatherIcon');
+            const labelEl = document.getElementById('navWeatherLabel');
+            if (iconEl) iconEl.className = `fa-solid ${iconMap[theme] || 'fa-sun'}`;
+            if (labelEl) labelEl.innerText = labelMap[theme] || 'Weather';
+
+            spawnWeatherParticles();
+            if (notify) {
+                showToast(`Atmosphere switched to ${labelMap[theme]}!`, 'fa-cloud-sun');
+            }
+        }
+
+        // App Initialization
+        function initApp() {
+            document.getElementById('currentYear').innerText = new Date().getFullYear();
+
+            const savedVideos = localStorage.getItem('sangin_videos');
+            const savedProducts = localStorage.getItem('sangin_products');
+            const savedMusic = localStorage.getItem('sangin_music');
+            const savedCart = localStorage.getItem('sangin_cart');
+            const savedWeather = localStorage.getItem('sangin_weather');
+            const savedAdmin = sessionStorage.getItem('sangin_admin_session');
+
+            state.videos = savedVideos ? JSON.parse(savedVideos) : DEFAULT_VIDEOS;
+            state.products = savedProducts ? JSON.parse(savedProducts) : DEFAULT_PRODUCTS;
+            state.music = savedMusic ? JSON.parse(savedMusic) : DEFAULT_MUSIC;
+            state.activeTrack = state.music[0] || DEFAULT_MUSIC[0];
+            state.cart = savedCart ? JSON.parse(savedCart) : [];
+            state.weather = savedWeather || 'sunny';
+            state.isAdmin = savedAdmin === 'true';
+
+            setWeatherMood(state.weather, false);
+            renderVideos(state.videos);
+            renderProducts(state.products);
+            renderMusicTracks();
+            updateCartUI();
+            initWeatherParticles();
+        }
+
+        // ================= MUSIC SECTION LOGIC =================
+        function renderMusicTracks() {
+            const list = document.getElementById('musicTracksList');
+            if (!list) return;
+
+            list.innerHTML = state.music.map((m, idx) => `
+                <div class="glass-card rounded-2xl p-4 flex items-center justify-between shadow hover:shadow-lg transition group border border-purple-500/10 ${state.activeTrack.id === m.id ? 'ring-2 ring-purple-500' : ''}">
+                    <div class="flex items-center gap-3.5">
+                        <img src="${m.cover}" alt="${m.title}" class="w-14 h-14 rounded-xl object-cover shadow" onerror="this.src='https://placehold.co/100x100/7c3aed/ffffff?text=Music'">
+                        <div>
+                            <span class="text-[10px] uppercase font-bold text-purple-600 dark:text-purple-400">${m.genre}</span>
+                            <h4 class="font-bold text-sm line-clamp-1">${m.title}</h4>
+                            <p class="text-xs opacity-65">${m.artist} • ${m.duration}</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <button onclick="playTrack(${idx})" class="w-10 h-10 rounded-full bg-purple-500/15 group-hover:bg-purple-600 text-purple-600 group-hover:text-white flex items-center justify-center transition shadow">
+                            <i class="fa-solid fa-play text-xs ml-0.5"></i>
+                        </button>
+                        <a href="${m.url}" target="_blank" rel="noopener noreferrer" class="p-2 rounded-xl text-xs opacity-50 hover:opacity-100 hover:text-red-500 transition" title="Listen on YouTube">
+                            <i class="fa-brands fa-youtube text-base"></i>
+                        </a>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function playTrack(idx) {
+            state.activeTrack = state.music[idx];
+            state.isPlayingMusic = true;
+
+            document.getElementById('playerCoverImg').src = state.activeTrack.cover;
+            document.getElementById('playerTrackTitle').innerText = state.activeTrack.title;
+            document.getElementById('playerArtist').innerText = state.activeTrack.artist;
+            document.getElementById('musicPlayIcon').className = 'fa-solid fa-pause text-xl';
+
+            renderMusicTracks();
+            showToast(`Now playing: ${state.activeTrack.title}`, 'fa-music');
+        }
+
+        function toggleMusicPlay() {
+            state.isPlayingMusic = !state.isPlayingMusic;
+            const icon = document.getElementById('musicPlayIcon');
+            if (state.isPlayingMusic) {
+                icon.className = 'fa-solid fa-pause text-xl';
+                showToast(`Resumed: ${state.activeTrack.title}`, 'fa-play');
+            } else {
+                icon.className = 'fa-solid fa-play text-xl ml-1';
+                showToast('Playback paused.', 'fa-pause');
+            }
+        }
+
+        function openTrackInYoutube() {
+            if (state.activeTrack && state.activeTrack.url) {
+                window.open(state.activeTrack.url, '_blank');
+            }
+        }
+
+        function runParticleLoop() {
+            if (!ctx) return;
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            if (state.weather === 'rainy') {
+                ctx.strokeStyle = '#93c5fd';
+                ctx.lineWidth = 1.2;
+                ctx.beginPath();
+                for (let p of particles) {
+                    ctx.moveTo(p.x, p.y);
+                    ctx.lineTo(p.x - 1, p.y + p.length);
+                    p.y += p.speed;
+                    p.x -= 0.5;
+                    if (p.y > canvas.height) {
+                        p.y = -20;
+                        p.x = Math.random() * canvas.width;
+                    }
+                }
+                ctx.stroke();
+            } else if (state.weather === 'night') {
+                for (let p of particles) {
+                    p.alpha += p.speed;
+                    const sparkle = (Math.sin(p.alpha) + 1) / 2;
+                    ctx.fillStyle = `rgba(255, 255, 255, ${0.2 + sparkle * 0.8})`;
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+            } else if (state.weather === 'foggy') {
+                for (let p of particles) {
+                    ctx.fillStyle = `rgba(226, 232, 240, ${p.alpha})`;
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+                    ctx.fill();
+                    p.x += p.dx;
+                    p.y += p.dy;
+                    if (p.x < -150) p.x = canvas.width + 100;
+                    if (p.x > canvas.width + 150) p.x = -100;
+                }
+            }
+
+            requestAnimationFrame(runParticleLoop);
+        }
+
+        // ================= YOUTUBE URL HELPER =================
+        function extractYouTubeID(url) {
+            if (!url) return null;
+            url = url.trim();
+            const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|shorts\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+            const match = url.match(regExp);
+            return (match && match[2].length === 11) ? match[2] : null;
+        }
+
+        // ================= ADMIN SECURED PORTAL =================
+        const ADMIN_CREDS = { id: 'sangindisomvibe', pass: 'Sundar@6087' };
+
+        function togglePasswordVisibility() {
+            const passInput = document.getElementById('adminInputPass');
+            const icon = document.getElementById('togglePassIcon');
+            if (passInput.type === 'password') {
+                passInput.type = 'text';
+                icon.className = 'fa-regular fa-eye-slash';
+            } else {
+                passInput.type = 'password';
+                icon.className = 'fa-regular fa-eye';
+            }
+        }
+
+        function openAdminModal() {
+            const modal = document.getElementById('adminModal');
+            const loginSec = document.getElementById('adminLoginSection');
+            const dashSec = document.getElementById('adminDashboardSection');
+            modal.classList.remove('hidden');
+
+            if (state.isAdmin) {
+                loginSec.classList.add('hidden');
+                dashSec.classList.remove('hidden');
+                refreshAdminLists();
+            } else {
+                loginSec.classList.remove('hidden');
+                dashSec.classList.add('hidden');
+            }
+        }
+
+        function closeAdminModal() {
+            document.getElementById('adminModal').classList.add('hidden');
+        }
+
+        function handleAdminLogin(e) {
+            e.preventDefault();
+            const id = document.getElementById('adminInputId').value.trim();
+            const pass = document.getElementById('adminInputPass').value.trim();
+            const err = document.getElementById('adminAuthError');
+
+            if (id === ADMIN_CREDS.id && pass === ADMIN_CREDS.pass) {
+                state.isAdmin = true;
+                sessionStorage.setItem('sangin_admin_session', 'true');
+                err.classList.add('hidden');
+                document.getElementById('adminLoginSection').classList.add('hidden');
+                document.getElementById('adminDashboardSection').classList.remove('hidden');
+                refreshAdminLists();
+                showToast('Welcome Admin! Portal unlocked.', 'fa-shield-halved');
+            } else {
+                err.classList.remove('hidden');
+            }
+        }
+
+        function handleAdminLogout() {
+            state.isAdmin = false;
+            sessionStorage.removeItem('sangin_admin_session');
+            document.getElementById('adminLoginSection').classList.remove('hidden');
+            document.getElementById('adminDashboardSection').classList.add('hidden');
+            showToast('Admin session ended.', 'fa-lock');
+        }
+
+        function switchAdminTab(tab) {
+            const vBtn = document.getElementById('btnTabVideo');
+            const pBtn = document.getElementById('btnTabProduct');
+            const muBtn = document.getElementById('btnTabMusic');
+            const mBtn = document.getElementById('btnTabManage');
+
+            const vPan = document.getElementById('adminPanel-video');
+            const pPan = document.getElementById('adminPanel-product');
+            const muPan = document.getElementById('adminPanel-music');
+            const mPan = document.getElementById('adminPanel-manage');
+
+            vBtn.className = 'px-3 py-1.5 rounded-xl text-xs font-bold bg-black/5 dark:bg-white/10 hover:bg-black/10 transition';
+            pBtn.className = 'px-3 py-1.5 rounded-xl text-xs font-bold bg-black/5 dark:bg-white/10 hover:bg-black/10 transition';
+            muBtn.className = 'px-3 py-1.5 rounded-xl text-xs font-bold bg-black/5 dark:bg-white/10 hover:bg-black/10 transition';
+            mBtn.className = 'px-3 py-1.5 rounded-xl text-xs font-bold bg-black/5 dark:bg-white/10 hover:bg-black/10 transition';
+
+            vPan.classList.add('hidden');
+            pPan.classList.add('hidden');
+            muPan.classList.add('hidden');
+            mPan.classList.add('hidden');
+
+            if (tab === 'videoTab') {
+                vBtn.className = 'px-3 py-1.5 rounded-xl text-xs font-bold bg-orange-500 text-white shadow';
+                vPan.classList.remove('hidden');
+            } else if (tab === 'productTab') {
+                pBtn.className = 'px-3 py-1.5 rounded-xl text-xs font-bold bg-emerald-600 text-white shadow';
+                pPan.classList.remove('hidden');
+            } else if (tab === 'musicTab') {
+                muBtn.className = 'px-3 py-1.5 rounded-xl text-xs font-bold bg-purple-600 text-white shadow';
+                muPan.classList.remove('hidden');
+            } else if (tab === 'manageTab') {
+                mBtn.className = 'px-3 py-1.5 rounded-xl text-xs font-bold bg-orange-500 text-white shadow';
+                mPan.classList.remove('hidden');
+                refreshAdminLists();
+            }
+        }
+
+        function handleAdminAddMusic(e) {
+            e.preventDefault();
+            const title = document.getElementById('admMusicTitle').value.trim();
+            const artist = document.getElementById('admMusicArtist').value.trim();
+            const genre = document.getElementById('admMusicGenre').value.trim();
+            const duration = document.getElementById('admMusicDuration').value.trim() || '03:30';
+            const url = document.getElementById('admMusicUrl').value.trim();
+            const cover = document.getElementById('admMusicCover').value.trim() || 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&w=600&q=80';
+
+            const newMusic = {
+                id: 'mus-' + Date.now(),
+                title,
+                artist,
+                genre,
+                duration,
+                url,
+                cover
+            };
+
+            state.music.unshift(newMusic);
+            localStorage.setItem('sangin_music', JSON.stringify(state.music));
+            renderMusicTracks();
+            refreshAdminLists();
+            e.target.reset();
+            showToast('New track added to Melodies Hub!', 'fa-music');
+        }
+
+        function adminDeleteMusic(id) {
+            state.music = state.music.filter(m => m.id !== id);
+            localStorage.setItem('sangin_music', JSON.stringify(state.music));
+            if (state.activeTrack && state.activeTrack.id === id) {
+                state.activeTrack = state.music[0] || DEFAULT_MUSIC[0];
+            }
+            renderMusicTracks();
+            refreshAdminLists();
+            showToast('Track deleted.', 'fa-trash');
+        }
+
+        function adminDeleteVideo(id) {
+            state.videos = state.videos.filter(v => v.id !== id);
+            localStorage.setItem('sangin_videos', JSON.stringify(state.videos));
+            renderVideos(state.videos);
+            refreshAdminLists();
+            showToast('Video deleted.', 'fa-trash');
+        }
+
+        function adminDeleteProduct(id) {
+            state.products = state.products.filter(p => p.id !== id);
+            localStorage.setItem('sangin_products', JSON.stringify(state.products));
+            renderProducts(state.products);
+            refreshAdminLists();
+            showToast('Product deleted.', 'fa-trash');
+        }
+
+        function refreshAdminLists() {
+            const vList = document.getElementById('admVideoList');
+            const pList = document.getElementById('admProductList');
+            const muList = document.getElementById('admMusicList');
+            document.getElementById('admVideoCount').innerText = state.videos.length;
+            document.getElementById('admProductCount').innerText = state.products.length;
+            const muCountEl = document.getElementById('admMusicCount');
+            if (muCountEl) muCountEl.innerText = state.music.length;
+
+            if (vList) {
+                vList.innerHTML = state.videos.map(v => `
+                    <div class="flex items-center justify-between p-2 rounded-xl bg-black/5 dark:bg-white/5 border border-black/5 dark:border-white/5">
+                        <div class="truncate max-w-[150px]">
+                            <span class="font-bold text-orange-500">${v.location}:</span> ${v.title}
+                        </div>
+                        <button onclick="adminDeleteVideo('${v.id}')" class="text-red-500 hover:text-red-700 p-1">
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
+                    </div>
+                `).join('');
+            }
+
+            if (pList) {
+                pList.innerHTML = state.products.map(p => `
+                    <div class="flex items-center justify-between p-2 rounded-xl bg-black/5 dark:bg-white/5 border border-black/5 dark:border-white/5">
+                        <div class="truncate max-w-[150px]">
+                            <span class="font-bold">${p.name}</span> (₹${p.price})
+                        </div>
+                        <button onclick="adminDeleteProduct('${p.id}')" class="text-red-500 hover:text-red-700 p-1">
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
+                    </div>
+                `).join('');
+            }
+
+            if (muList) {
+                muList.innerHTML = state.music.map(m => `
+                    <div class="flex items-center justify-between p-2 rounded-xl bg-black/5 dark:bg-white/5 border border-black/5 dark:border-white/5">
+                        <div class="truncate max-w-[150px]">
+                            <span class="font-bold text-purple-500">${m.artist}:</span> ${m.title}
+                        </div>
+                        <button onclick="adminDeleteMusic('${m.id}')" class="text-red-500 hover:text-red-700 p-1">
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
+                    </div>
+                `).join('');
+            }
+        }
+
+        // ================= VIDEO STREAMING & EXPLORER =================
+        function renderVideos(list) {
+            const grid = document.getElementById('videoGrid');
+            if (!grid) return;
+
+            if (list.length === 0) {
+                grid.innerHTML = `
+                    <div class="col-span-full text-center py-12 glass-card rounded-3xl">
+                        <i class="fa-solid fa-video-slash text-4xl opacity-40 mb-2"></i>
+                        <p class="text-sm font-semibold">No streams matching this criteria.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            grid.innerHTML = list.map(v => {
+                const vidId = extractYouTubeID(v.url) || 'dQw4w9WgXcQ';
+                const thumb = `https://img.youtube.com/vi/${vidId}/hqdefault.jpg`;
+
+                return `
+                    <div class="glass-card rounded-2xl overflow-hidden shadow hover:shadow-2xl transition duration-300 flex flex-col group border border-white/20">
+                        <div class="relative overflow-hidden cursor-pointer aspect-video bg-black" onclick="openVideoPlayer('${v.id}')">
+                            <img src="${thumb}" alt="${v.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 opacity-90 group-hover:opacity-100" onerror="this.src='https://placehold.co/600x340/1e293b/ffffff?text=Travel+Stream'">
+                            <div class="absolute inset-0 bg-black/30 group-hover:bg-black/15 transition-colors flex items-center justify-center">
+                                <div class="w-12 h-12 rounded-full bg-red-600 text-white flex items-center justify-center shadow-lg transform group-hover:scale-110 transition-transform">
+                                    <i class="fa-solid fa-play text-base ml-1"></i>
+                                </div>
+                            </div>
+                            <span class="absolute bottom-2 left-2 px-2.5 py-1 rounded-lg text-[11px] font-semibold bg-black/75 text-white backdrop-blur-sm flex items-center gap-1">
+                                <i class="fa-solid fa-location-dot text-orange-400"></i> ${v.location}
+                            </span>
+                        </div>
+                        <div class="p-4 flex-1 flex flex-col justify-between space-y-3">
+                            <div class="space-y-1">
+                                <span class="text-orange-600 dark:text-orange-400 font-bold uppercase tracking-wider text-[10px]">${v.category || 'Travel'}</span>
+                                <h3 class="font-bold text-sm sm:text-base leading-snug line-clamp-2 hover:text-orange-500 cursor-pointer" onclick="openVideoPlayer('${v.id}')">
+                                    ${v.title}
+                                </h3>
+                                <p class="text-xs opacity-75 line-clamp-2">${v.desc || ''}</p>
+                            </div>
+                            <div class="pt-2 border-t border-black/10 dark:border-white/10 flex items-center justify-between">
+                                <button onclick="openVideoPlayer('${v.id}')" class="text-xs font-bold text-orange-600 dark:text-orange-400 hover:underline flex items-center gap-1">
+                                    <i class="fa-solid fa-circle-play"></i> Watch Here
+                                </button>
+                                <a href="${v.url}" target="_blank" rel="noopener noreferrer" class="text-xs opacity-60 hover:opacity-100" title="Watch on YouTube">
+                                    <i class="fa-brands fa-youtube text-red-500 text-base"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function openVideoPlayer(id) {
+            const item = state.videos.find(v => v.id === id);
+            if (!item) return;
+            const yId = extractYouTubeID(item.url);
+            showVideoModal(yId, item.title, item.location, item.url);
+        }
+
+        function showVideoModal(yId, title, location, fullUrl) {
+            state.currentVideoLink = fullUrl || `https://www.youtube.com/watch?v=${yId}`;
+            const modal = document.getElementById('videoModal');
+            const iframe = document.getElementById('modalVideoIframe');
+            document.getElementById('modalVideoTitle').innerText = title;
+            document.getElementById('modalVideoLocation').innerHTML = `<i class="fa-solid fa-location-dot text-orange-400 mr-1"></i> ${location}`;
+
+            iframe.src = `https://www.youtube.com/embed/${yId}?autoplay=1&rel=0`;
+            modal.classList.remove('hidden');
+        }
+
+        function closeVideoModal() {
+            const modal = document.getElementById('videoModal');
+            document.getElementById('modalVideoIframe').src = '';
+            modal.classList.add('hidden');
+        }
+
+        function copyCurrentVideoLink() {
+            if (!state.currentVideoLink) return;
+            const el = document.createElement('input');
+            el.value = state.currentVideoLink;
+            document.body.appendChild(el);
+            el.select();
+            document.execCommand('copy');
+            document.body.removeChild(el);
+            showToast('Link copied to clipboard!', 'fa-clipboard-check');
+        }
+
+        function filterVideos(cat) {
+            document.querySelectorAll('.vid-cat-btn').forEach(b => {
+                b.className = 'vid-cat-btn px-4 py-1.5 rounded-xl text-xs font-semibold bg-black/5 dark:bg-white/10 hover:bg-black/10';
+            });
+            event.target.className = 'vid-cat-btn px-4 py-1.5 rounded-xl text-xs font-bold bg-orange-500 text-white shadow';
+
+            if (cat === 'all') {
+                renderVideos(state.videos);
+            } else {
+                renderVideos(state.videos.filter(v => v.category === cat));
+            }
+        }
+
+        function searchVideos() {
+            const q = document.getElementById('videoSearchInput').value.toLowerCase();
+            const filtered = state.videos.filter(v => 
+                v.title.toLowerCase().includes(q) ||
+                v.location.toLowerCase().includes(q) ||
+                (v.desc && v.desc.toLowerCase().includes(q))
+            );
+            renderVideos(filtered);
+        }
+
+        // ================= MARKETPLACE & CART =================
+        function renderProducts(list) {
+            const grid = document.getElementById('productGrid');
+            if (!grid) return;
+
+            if (list.length === 0) {
+                grid.innerHTML = `
+                    <div class="col-span-full text-center py-12 glass-card rounded-3xl">
+                        <i class="fa-solid fa-box-open text-4xl opacity-40 mb-2"></i>
+                        <p class="text-sm font-semibold">No products in this category.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            grid.innerHTML = list.map(p => `
+                <div class="glass-card rounded-2xl overflow-hidden shadow hover:shadow-xl transition flex flex-col group border border-white/20">
+                    <div class="relative overflow-hidden aspect-square bg-slate-100 dark:bg-slate-800">
+                        <img src="${p.image}" alt="${p.name}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" onerror="this.src='https://placehold.co/400x400/ea580c/ffffff?text=SanginDisom'">
+                        ${p.badge ? `<span class="absolute top-2 left-2 bg-orange-500 text-white font-bold text-[10px] px-2.5 py-0.5 rounded-full shadow uppercase">${p.badge}</span>` : ''}
+                        <button onclick="addToCart('${p.id}')" class="absolute bottom-2 right-2 p-2.5 rounded-xl bg-white dark:bg-slate-900 text-slate-800 dark:text-white shadow-lg hover:bg-orange-500 hover:text-white transition" title="Add to Cart">
+                            <i class="fa-solid fa-cart-plus"></i>
+                        </button>
+                    </div>
+                    <div class="p-4 flex-1 flex flex-col justify-between space-y-3">
+                        <div>
+                            <span class="text-[10px] font-bold text-emerald-600 dark:text-emerald-400 uppercase tracking-wider">${p.category || 'Handicrafts'}</span>
+                            <h4 class="font-bold text-sm sm:text-base leading-snug line-clamp-2 mt-0.5">${p.name}</h4>
+                            <p class="text-xs opacity-75 line-clamp-2 mt-1">${p.desc || ''}</p>
+                        </div>
+                        <div class="pt-2 border-t border-black/10 dark:border-white/10 flex items-center justify-between">
+                            <div>
+                                <span class="text-base sm:text-lg font-black text-orange-600 dark:text-orange-400">₹${p.price}</span>
+                                ${p.origPrice ? `<span class="text-xs line-through opacity-50 ml-1">₹${p.origPrice}</span>` : ''}
+                            </div>
+                            <button onclick="buyNowWhatsApp('${p.id}')" class="px-3 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold flex items-center gap-1 shadow transition">
+                                <i class="fa-brands fa-whatsapp"></i> Buy Now
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function filterProducts(cat) {
+            document.querySelectorAll('.prod-cat-btn').forEach(b => {
+                b.className = 'prod-cat-btn px-4 py-1.5 rounded-xl text-xs font-semibold bg-black/5 dark:bg-white/10 hover:bg-black/10';
+            });
+            event.target.className = 'prod-cat-btn px-4 py-1.5 rounded-xl text-xs font-bold bg-orange-500 text-white shadow';
+
+            if (cat === 'all') {
+                renderProducts(state.products);
+            } else {
+                renderProducts(state.products.filter(p => p.category === cat));
+            }
+        }
+
+        function sortProducts() {
+            const val = document.getElementById('productSort').value;
+            let sorted = [...state.products];
+            if (val === 'low-to-high') sorted.sort((a, b) => a.price - b.price);
+            if (val === 'high-to-low') sorted.sort((a, b) => b.price - a.price);
+            renderProducts(sorted);
+        }
+
+        function addToCart(id) {
+            const prod = state.products.find(p => p.id === id);
+            if (!prod) return;
+
+            const existing = state.cart.find(i => i.id === id);
+            if (existing) {
+                existing.qty += 1;
+            } else {
+                state.cart.push({ ...prod, qty: 1 });
+            }
+            saveCart();
+            updateCartUI();
+            showToast(`${prod.name} added to cart!`, 'fa-cart-arrow-down');
+        }
+
+        function updateCartQty(id, delta) {
+            const item = state.cart.find(i => i.id === id);
+            if (!item) return;
+
+            item.qty += delta;
+            if (item.qty <= 0) {
+                state.cart = state.cart.filter(i => i.id !== id);
+            }
+            saveCart();
+            updateCartUI();
+        }
+
+        function removeCartItem(id) {
+            state.cart = state.cart.filter(i => i.id !== id);
+            saveCart();
+            updateCartUI();
+            showToast('Item removed.', 'fa-trash');
+        }
+
+        function clearEntireCart() {
+            state.cart = [];
+            saveCart();
+            updateCartUI();
+            showToast('Cart cleared.', 'fa-trash-can');
+        }
+
+        function saveCart() {
+            localStorage.setItem('sangin_cart', JSON.stringify(state.cart));
+        }
+
+        function updateCartUI() {
+            const countBadge = document.getElementById('cartCountBadge');
+            const list = document.getElementById('cartItemsList');
+            const totalEl = document.getElementById('cartTotalPrice');
+
+            const totalQty = state.cart.reduce((s, i) => s + i.qty, 0);
+            const totalSum = state.cart.reduce((s, i) => s + (i.price * i.qty), 0);
+
+            if (countBadge) countBadge.innerText = totalQty;
+            if (totalEl) totalEl.innerText = `₹${totalSum.toLocaleString('en-IN')}`;
+
+            if (!list) return;
+
+            if (state.cart.length === 0) {
+                list.innerHTML = `
+                    <div class="h-full flex flex-col items-center justify-center text-center opacity-60 space-y-2 py-16">
+                        <i class="fa-solid fa-basket-shopping text-5xl opacity-40"></i>
+                        <p class="text-sm font-semibold">Your shopping cart is currently empty.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            list.innerHTML = state.cart.map(item => `
+                <div class="flex items-center gap-3 p-3 rounded-2xl bg-black/5 dark:bg-white/5 border border-black/5 dark:border-white/5">
+                    <img src="${item.image}" alt="${item.name}" class="w-16 h-16 rounded-xl object-cover" onerror="this.src='https://placehold.co/100x100/ea580c/ffffff?text=Item'">
+                    <div class="flex-1 min-w-0">
+                        <h4 class="font-bold text-xs truncate">${item.name}</h4>
+                        <div class="text-xs font-bold text-orange-600 dark:text-orange-400 mt-0.5">₹${item.price}</div>
+                        <div class="flex items-center gap-2 mt-2">
+                            <div class="flex items-center border border-black/20 dark:border-white/20 rounded-lg overflow-hidden">
+                                <button onclick="updateCartQty('${item.id}', -1)" class="px-2 py-0.5 hover:bg-black/10 dark:hover:bg-white/10 text-xs font-bold">-</button>
+                                <span class="px-2 text-xs font-bold">${item.qty}</span>
+                                <button onclick="updateCartQty('${item.id}', 1)" class="px-2 py-0.5 hover:bg-black/10 dark:hover:bg-white/10 text-xs font-bold">+</button>
+                            </div>
+                            <button onclick="removeCartItem('${item.id}')" class="text-red-500 hover:text-red-700 text-xs ml-auto">
+                                <i class="fa-solid fa-trash-can"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function toggleCart(open) {
+            const drawer = document.getElementById('cartDrawer');
+            const backdrop = document.getElementById('cartBackdrop');
+            if (open) {
+                backdrop.classList.remove('hidden');
+                drawer.classList.remove('translate-x-full');
+            } else {
+                backdrop.classList.add('hidden');
+                drawer.classList.add('translate-x-full');
+            }
+        }
+
+        // WhatsApp Checkout
+        const SANGIN_WHATSAPP_NUMBER = '918294126087';
+
+        function checkoutOnWhatsApp() {
+            if (state.cart.length === 0) {
+                showToast('Your cart is empty!', 'fa-cart-shopping');
+                return;
+            }
+
+            const total = state.cart.reduce((s, i) => s + (i.price * i.qty), 0);
+            let msg = `*Namaskar SanginDisomVibe!* 🌿\n`;
+            msg += `I would like to place an order from *Sangin Disom Bazar*.\n\n`;
+            msg += `🛒 *ORDER SUMMARY:*\n`;
+            msg += `------------------------------------\n`;
+
+            state.cart.forEach((i, idx) => {
+                msg += `${idx + 1}. *${i.name}*\n`;
+                msg += `   • Qty: ${i.qty} x ₹${i.price} = ₹${i.price * i.qty}\n`;
+            });
+
+            msg += `------------------------------------\n`;
+            msg += `💰 *Total Amount Payable: ₹${total.toLocaleString('en-IN')}*\n\n`;
+            msg += `📦 *CUSTOMER & SHIPPING DETAILS:*\n`;
+            msg += `• Name:\n`;
+            msg += `• Mobile Number:\n`;
+            msg += `• Complete Delivery Address:\n`;
+            msg += `• Pincode / Landmark:\n\n`;
+            msg += `Please verify availability and share payment/UPI details. Thank you!`;
+
+            const link = `https://wa.me/${SANGIN_WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`;
+            window.open(link, '_blank');
+        }
+
+        function buyNowWhatsApp(prodId) {
+            const p = state.products.find(i => i.id === prodId);
+            if (!p) return;
+
+            let msg = `*Namaskar SanginDisomVibe!* 🌿\n`;
+            msg += `I would like to immediately purchase this item from *Sangin Disom Bazar*:\n\n`;
+            msg += `🛍️ *PRODUCT DETAILS:*\n`;
+            msg += `• *Product:* ${p.name}\n`;
+            msg += `• *Price:* ₹${p.price.toLocaleString('en-IN')}\n`;
+            msg += `• *Category:* ${p.category || 'Handicrafts'}\n\n`;
+            msg += `📦 *MY SHIPPING DETAILS:*\n`;
+            msg += `• Name:\n`;
+            msg += `• Delivery Address:\n`;
+            msg += `• Pincode:\n\n`;
+            msg += `Please send me your UPI/Payment link and estimated delivery time. Thank you!`;
+
+            const link = `https://wa.me/${SANGIN_WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`;
+            window.open(link, '_blank');
+        }
+
+        // Toast Messages
+        let toastTimer;
+        function showToast(msg, icon = 'fa-check') {
+            const toast = document.getElementById('appToast');
+            const msgEl = document.getElementById('toastMessage');
+            const iconEl = document.getElementById('toastIcon');
+
+            if (!toast) return;
+            msgEl.innerText = msg;
+            iconEl.innerHTML = `<i class="fa-solid ${icon}"></i>`;
+
+            toast.classList.remove('translate-y-20', 'opacity-0');
+            toast.classList.add('translate-y-0', 'opacity-100');
+
+            clearTimeout(toastTimer);
+            toastTimer = setTimeout(() => {
+                toast.classList.add('translate-y-20', 'opacity-0');
+                toast.classList.remove('translate-y-0', 'opacity-100');
+            }, 3000);
+        }
+
+        // Start App
+        window.addEventListener('DOMContentLoaded', initApp);
+    </script>
+</body>
+</html>
